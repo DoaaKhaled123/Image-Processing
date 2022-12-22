@@ -2,7 +2,7 @@ import supertest from 'supertest';
 import app from '../index';
 import { promises as fs } from 'fs';
 import path from 'path';
-import File from './../file';
+import ImgFile from './../file';
 
 const img_request: supertest.SuperTest<supertest.Test> = supertest(app);
 
@@ -16,25 +16,25 @@ describe('Test responses from endpoints', (): void => {
   });
 
   describe('endpoint: /api/images', (): void => {
-    it('gets /api/images?filename=fjord (valid args)', async (): Promise<void> => {
+    it('gets /api/images?imgfilename=encenadaport (valid args)', async (): Promise<void> => {
       const response: supertest.Response = await img_request.get(
-        '/api/images?filename=fjord'
+        '/api/images?imgfilename=encenadaport'
       );
 
       expect(response.status).toBe(200);
     });
 
-    it('gets /api/images?filename=fjord&width=199&height=199 (valid args)', async (): Promise<void> => {
+    it('gets /api/images?imgfilename=encenadaport&imgwidth=199&imgheight=199 (valid args)', async (): Promise<void> => {
       const response: supertest.Response = await img_request.get(
-        '/api/images?filename=fjord&width=199&height=199'
+        '/api/images?imgfilename=encenadaport&imgwidth=199&imgheight=199'
       );
 
       expect(response.status).toBe(200);
     });
 
-    it('gets /api/images?filename=fjord&width=-200&height=200 (invalid args)', async (): Promise<void> => {
+    it('gets /api/images?imgfilename=encenadaport&imgwidth=-200&imgheight=200 (invalid args)', async (): Promise<void> => {
       const response: supertest.Response = await img_request.get(
-        '/api/images?filename=fjord&width=-200&height=200'
+        '/api/images?imgfilename=encenadaport&imgwidth=-200&imgheight=200'
       );
 
       expect(response.status).toBe(200);
@@ -57,14 +57,14 @@ describe('Test responses from endpoints', (): void => {
 });
 
 afterAll(async (): Promise<void> => {
-  const resizedImagePath: string = path.resolve(
-    File.imagesThumbPath,
-    'fjord-199x199.jpg'
+  const imgPathResized: string = path.resolve(
+    ImgFile.imgThumbPath,
+    'encenadaport-199x199.jpg'
   );
 
   try {
-    await fs.access(resizedImagePath);
-    fs.unlink(resizedImagePath);
+    await fs.access(imgPathResized);
+    fs.unlink(imgPathResized);
   } catch {
   }
 });

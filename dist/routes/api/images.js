@@ -15,20 +15,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const file_1 = __importDefault(require("./../../file"));
 const img_validate = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(yield file_1.default.isImageAvailable(query.filename))) {
-        const availableImageNames = (yield file_1.default.getAvailableImageNames()).join(', ');
-        return `Please enter a valid filename in the 'filename' query segment. Filenames are available : ${availableImageNames}.`;
+    if (!(yield file_1.default.isImgAvailable(query.imgfilename))) {
+        const availableImgNames = (yield file_1.default.getAvailableImgNames()).join(', ');
+        return `Please enter a valid filename in the 'imgfilename' query segment. Filenames are available : ${availableImgNames}.`;
     }
-    if (!query.width && !query.height) {
+    if (!query.imgwidth && !query.imgheight) {
         return null; // No size values
     }
-    const img_width = parseInt(query.width || '');
-    if (Number.isNaN(img_width) || img_width < 1) {
-        return "Please enter a positive numerical value for the 'img_width' query segment.";
+    const imgwidth = parseInt(query.imgwidth || '');
+    if (Number.isNaN(imgwidth) || imgwidth < 1) {
+        return "Please enter a positive numerical value for the 'imgwidth' query segment.";
     }
-    const img_height = parseInt(query.height || '');
-    if (Number.isNaN(img_height) || img_height < 1) {
-        return "Please enter a positive numerical value for the 'img_height' query segment.";
+    const imgheight = parseInt(query.imgheight || '');
+    if (Number.isNaN(imgheight) || imgheight < 1) {
+        return "Please enter a positive numerical value for the 'imgheight' query segment.";
     }
     return null;
 });
@@ -47,7 +47,7 @@ images_resize.get('/', (request, response) => __awaiter(void 0, void 0, void 0, 
         response.send(error);
         return;
     }
-    const path = yield file_1.default.getImagePath(request.query);
+    const path = yield file_1.default.getImgPath(request.query);
     if (path) {
         response.sendFile(path);
     }

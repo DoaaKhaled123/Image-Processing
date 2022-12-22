@@ -1,29 +1,29 @@
 import express from 'express';
-import File from './../../file';
+import ImgFile from './../../file';
 
-interface Image {
-  filename?: string;
-  width?: string;
-  height?: string;
+interface ImageData {
+  imgfilename?: string;
+  imgwidth?: string;
+  imgheight?: string;
 }
 
-const img_validate = async (query: Image): Promise<null | string> => {
-  if (!(await File.isImageAvailable(query.filename))) {
-    const availableImageNames: string = (
-      await File.getAvailableImageNames()
+const img_validate = async (query: ImageData): Promise<null | string> => {
+  if (!(await ImgFile.isImgAvailable(query.imgfilename))) {
+    const availableImgNames: string = (
+      await ImgFile.getAvailableImgNames()
     ).join(', ');
-    return `Please enter a valid filename in the 'filename' query segment. Filenames are available : ${availableImageNames}.`;
+    return `Please enter a valid filename in the 'imgfilename' query segment. Filenames are available : ${availableImgNames}.`;
   }
-  if (!query.width && !query.height) {
-    return null; // No size values
+  if (!query.imgwidth && !query.imgheight) {
+    return null;
   }
-  const img_width: number = parseInt(query.width || '');
-  if (Number.isNaN(img_width) || img_width < 1) {
-    return "Please enter a positive numerical value for the 'img_width' query segment.";
+  const imgwidth: number = parseInt(query.imgwidth || '');
+  if (Number.isNaN(imgwidth) || imgwidth < 1) {
+    return "Please enter a positive numerical value for the 'imgwidth' query segment.";
   }
-  const img_height: number = parseInt(query.height || '');
-  if (Number.isNaN(img_height) || img_height < 1) {
-    return "Please enter a positive numerical value for the 'img_height' query segment.";
+  const imgheight: number = parseInt(query.imgheight || '');
+  if (Number.isNaN(imgheight) || imgheight < 1) {
+    return "Please enter a positive numerical value for the 'imgheight' query segment.";
   }
   return null;
 };
@@ -40,14 +40,14 @@ images_resize.get(
       return;
     }
     let error: null | string = '';
-    if (!(await File.isThumbAvailable(request.query))) {
-      error = await File.createThumb(request.query);
+    if (!(await ImgFile.isThumbAvailable(request.query))) {
+      error = await ImgFile.createThumb(request.query);
     }
     if (error) {
       response.send(error);
       return;
     }
-    const path: null | string = await File.getImagePath(request.query);
+    const path: null | string = await ImgFile.getImgPath(request.query);
     if (path) {
       response.sendFile(path);
     } else {

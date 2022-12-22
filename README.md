@@ -30,21 +30,21 @@ http://localhost:8069/api/images
 Will display a hint and list available image names
 
 ### Example 2
-http://localhost:8069/api/images?filename=fjord
-Will display the original fjord image.
+http://localhost:8069/api/images?imgfilename=encenadaport
+Will display the original encenadaport image.
 
 ### Example 3
-http://localhost:8069/api/images?filename=fjord&width=200&height=200
-Will scale the fjord image to 200 by 200 pixels and store the resulting image.
+http://localhost:8069/api/images?imgfilename=encenadaport&imgwidth=200&imgheight=200
+Will scale the encenadaport image to 200 by 200 pixels and store the resulting image.
 On subsequent calls will serve the resized image instead of resizing the
 original again.
 
 ### Example 4
-http://localhost:8069/api/images?filename=fjord&width=-200&height=200
+http://localhost:8069/api/images?imgfilename=encenadaport&imgwidth=-200&imgheight=200
 Invalid width parameter that will be hinted to.
 
 ### Example 5
-http://localhost:8069/api/images?filename=fjord&width=200
+http://localhost:8069/api/images?imgfilename=encenadaport&imgwidth=200
 Missing height parameter that will be hinted to.
 
 ### Notes

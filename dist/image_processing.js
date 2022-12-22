@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sharp_1 = __importDefault(require("sharp"));
 const processImage = (params) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield (0, sharp_1.default)(params.source)
-            .resize(params.width, params.height)
+        yield (0, sharp_1.default)(params.imgsource)
+            .resize(params.imgwidth, params.imgheight)
             .toFormat('jpeg')
-            .toFile(params.target);
+            .toFile(params.imgtarget);
         return null;
     }
     catch (_a) {

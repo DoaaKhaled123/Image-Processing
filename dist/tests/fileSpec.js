@@ -15,42 +15,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
 const path_1 = __importDefault(require("path"));
 const file_1 = __importDefault(require("./../file"));
-describe('Test image processing via sharp', () => {
-    it('raises an error (invalid width value)', () => __awaiter(void 0, void 0, void 0, function* () {
-        const error = yield file_1.default.createThumb({
-            filename: 'foo',
-            width: '-100',
-            height: '500'
+describe('Sharp Image Processing', () => {
+    it('raises an error (Value of width invalid)', () => __awaiter(void 0, void 0, void 0, function* () {
+        const img_error = yield file_1.default.createThumb({
+            imgfilename: 'foo',
+            imgwidth: '-100',
+            imgheight: '500'
         });
-        expect(error).not.toBeNull();
+        expect(img_error).not.toBeNull();
     }));
     it('raises an error (filename does not exist)', () => __awaiter(void 0, void 0, void 0, function* () {
-        const error = yield file_1.default.createThumb({
-            filename: 'foo',
-            width: '100',
-            height: '500'
+        const img_error = yield file_1.default.createThumb({
+            imgfilename: 'foo',
+            imgwidth: '100',
+            imgheight: '500'
         });
-        expect(error).not.toBeNull();
+        expect(img_error).not.toBeNull();
     }));
-    it('succeeds to write resized thumb file (existing file, valid size values)', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield file_1.default.createThumb({ filename: 'fjord', width: '99', height: '99' });
-        const resizedImagePath = path_1.default.resolve(file_1.default.imagesThumbPath, `fjord-99x99.jpg`);
-        let errorFile = '';
+    it('succeeds to write resized thumb file (existing file, size values valid )', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield file_1.default.createThumb({ imgfilename: 'encenadaport', imgwidth: '99', imgheight: '99' });
+        const imgPathResized = path_1.default.resolve(file_1.default.imgThumbPath, `encenadaport-99x99.jpg`);
+        let imgErrorFile = '';
         try {
-            yield fs_1.promises.access(resizedImagePath);
-            errorFile = null;
+            yield fs_1.promises.access(imgPathResized);
+            imgErrorFile = null;
         }
         catch (_a) {
-            errorFile = 'File was not created';
+            imgErrorFile = 'File not created';
         }
-        expect(errorFile).toBeNull();
+        expect(imgErrorFile).toBeNull();
     }));
 });
 afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
-    const resizedImagePath = path_1.default.resolve(file_1.default.imagesThumbPath, 'fjord-99x99.jpg');
+    const imgPathResized = path_1.default.resolve(file_1.default.imgThumbPath, 'encenadaport-100x100.jpg');
     try {
-        yield fs_1.promises.access(resizedImagePath);
-        fs_1.promises.unlink(resizedImagePath);
+        yield fs_1.promises.access(imgPathResized);
+        fs_1.promises.unlink(imgPathResized);
     }
     catch (_a) {
     }

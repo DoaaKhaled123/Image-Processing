@@ -1,57 +1,57 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import processImage from './image_processing'; // Image handling
+import processImage from './image_processing';
 
-interface Image {
-  filename?: string;
-  width?: string;
-  height?: string;
+interface ImageData {
+  imgfilename?: string;
+  imgwidth?: string;
+  imgheight?: string;
 }
 
-export default class File {
-  static imagesFullPath = path.resolve(__dirname, '../assets/images/full');
-  static imagesThumbPath = path.resolve(__dirname, '../assets/images/thumb');
-  static async getImagePath(params: Image): Promise<null | string> {
-    if (!params.filename) {
+export default class ImgFile {
+  static imgFullPath = path.resolve(__dirname, '../assets/images/full');
+  static imgThumbPath = path.resolve(__dirname, '../assets/images/thumb');
+  static async getImgPath(params: ImageData): Promise<null | string> {
+    if (!params.imgfilename) {
       return null;
     }
-    const filePath: string =
-      params.width && params.height
+    const imgfilePath: string =
+      params.imgwidth && params.imgheight
         ? path.resolve(
-            File.imagesThumbPath,
-            `${params.filename}-${params.width}x${params.height}.jpg`
+          ImgFile.imgThumbPath,
+            `${params.imgfilename}-${params.imgwidth}x${params.imgheight}.jpg`
           )
-        : path.resolve(File.imagesFullPath, `${params.filename}.jpg`);
+        : path.resolve(ImgFile.imgFullPath, `${params.imgfilename}.jpg`);
     try {
-      await fs.access(filePath);
-      return filePath;
+      await fs.access(imgfilePath);
+      return imgfilePath;
     } catch {
       return null;
     }
   }
-  static async isImageAvailable(filename: string = ''): Promise<boolean> {
-    if (!filename) {
+  static async isImgAvailable(imgfilename: string = ''): Promise<boolean> {
+    if (!imgfilename) {
       return false; 
     }
 
-    return (await File.getAvailableImageNames()).includes(filename);
+    return (await ImgFile.getAvailableImgNames()).includes(imgfilename);
   }
-  static async getAvailableImageNames(): Promise<string[]> {
+  static async getAvailableImgNames(): Promise<string[]> {
     try {
-      return (await fs.readdir(File.imagesFullPath)).map(
-        (filename: string): string => filename.split('.')[0]
+      return (await fs.readdir(ImgFile.imgFullPath)).map(
+        (imgfilename: string): string => imgfilename.split('.')[0]
       );
     } catch {
       return [];
     }
   }
-  static async isThumbAvailable(params: Image): Promise<boolean> {
-    if (!params.filename || !params.width || !params.height) {
+  static async isThumbAvailable(params: ImageData): Promise<boolean> {
+    if (!params.imgfilename || !params.imgwidth || !params.imgheight) {
       return false; 
     }
     const filePath: string = path.resolve(
-      File.imagesThumbPath,
-      `${params.filename}-${params.width}x${params.height}.jpg`
+      ImgFile.imgThumbPath,
+      `${params.imgfilename}-${params.imgwidth}x${params.imgheight}.jpg`
     );
 
     try {
@@ -63,29 +63,29 @@ export default class File {
   }
   static async createThumbPath(): Promise<void> {
     try {
-      await fs.access(File.imagesThumbPath);
+      await fs.access(ImgFile.imgThumbPath);
     } catch {
-      fs.mkdir(File.imagesThumbPath);
+      fs.mkdir(ImgFile.imgThumbPath);
     }
   }
-  static async createThumb(params: Image): Promise<null | string> {
-    if (!params.filename || !params.width || !params.height) {
+  static async createThumb(params: ImageData): Promise<null | string> {
+    if (!params.imgfilename || !params.imgwidth || !params.imgheight) {
       return null; 
     }
-    const filePathFull: string = path.resolve(
-      File.imagesFullPath,
-      `${params.filename}.jpg`
+    const imgfilePathFull: string = path.resolve(
+      ImgFile.imgFullPath,
+      `${params.imgfilename}.jpg`
     );
-    const filePathThumb: string = path.resolve(
-      File.imagesThumbPath,
-      `${params.filename}-${params.width}x${params.height}.jpg`
+    const imgfilePathThumb: string = path.resolve(
+      ImgFile.imgThumbPath,
+      `${params.imgfilename}-${params.imgwidth}x${params.imgheight}.jpg`
     );
-    console.log(`Creating thumb ${filePathThumb}`);
+    console.log(`Creating thumb ${imgfilePathThumb}`);
     return await processImage({
-      source: filePathFull,
-      target: filePathThumb,
-      width: parseInt(params.width),
-      height: parseInt(params.height)
+      imgsource: imgfilePathFull,
+      imgtarget: imgfilePathThumb,
+      imgwidth: parseInt(params.imgwidth),
+      imgheight: parseInt(params.imgheight)
     });
   }
 }

@@ -26,16 +26,16 @@ describe('Test responses from endpoints', () => {
         }));
     });
     describe('endpoint: /api/images', () => {
-        it('gets /api/images?filename=fjord (valid args)', () => __awaiter(void 0, void 0, void 0, function* () {
-            const response = yield img_request.get('/api/images?filename=fjord');
+        it('gets /api/images?imgfilename=encenadaport (valid args)', () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield img_request.get('/api/images?imgfilename=encenadaport');
             expect(response.status).toBe(200);
         }));
-        it('gets /api/images?filename=fjord&width=199&height=199 (valid args)', () => __awaiter(void 0, void 0, void 0, function* () {
-            const response = yield img_request.get('/api/images?filename=fjord&width=199&height=199');
+        it('gets /api/images?imgfilename=encenadaport&imgwidth=199&imgheight=199 (valid args)', () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield img_request.get('/api/images?imgfilename=encenadaport&imgwidth=199&imgheight=199');
             expect(response.status).toBe(200);
         }));
-        it('gets /api/images?filename=fjord&width=-200&height=200 (invalid args)', () => __awaiter(void 0, void 0, void 0, function* () {
-            const response = yield img_request.get('/api/images?filename=fjord&width=-200&height=200');
+        it('gets /api/images?imgfilename=encenadaport&imgwidth=-200&imgheight=200 (invalid args)', () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield img_request.get('/api/images?imgfilename=encenadaport&imgwidth=-200&imgheight=200');
             expect(response.status).toBe(200);
         }));
         it('gets /api/images (no arguments)', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -51,10 +51,10 @@ describe('Test responses from endpoints', () => {
     });
 });
 afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
-    const resizedImagePath = path_1.default.resolve(file_1.default.imagesThumbPath, 'fjord-199x199.jpg');
+    const imgPathResized = path_1.default.resolve(file_1.default.imgThumbPath, 'encenadaport-199x199.jpg');
     try {
-        yield fs_1.promises.access(resizedImagePath);
-        fs_1.promises.unlink(resizedImagePath);
+        yield fs_1.promises.access(imgPathResized);
+        fs_1.promises.unlink(imgPathResized);
     }
     catch (_a) {
     }
